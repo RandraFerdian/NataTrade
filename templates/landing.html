@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id" class="light" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NataTrade - Menata Transaksi, Menata Masa Depan</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = { darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Efek Kaca (Glassmorphism) sesuai Zen-UI */
+        .glass { 
+            background: rgba(255, 255, 255, 0.6); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+        }
+        .dark .glass { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+
+<body class="bg-[#FDFDFF] dark:bg-[#060b18] text-slate-900 dark:text-white transition-colors duration-500 font-sans antialiased overflow-x-hidden">
+    
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-indigo-500/10 dark:bg-indigo-600/20 blur-[130px] rounded-full"></div>
+        <div class="absolute bottom-[10%] right-[-5%] w-[50%] h-[50%] bg-purple-500/10 dark:bg-purple-600/15 blur-[130px] rounded-full"></div>
+    </div>
+
+    <nav class="sticky top-0 z-50 bg-white/60 dark:bg-white/5 backdrop-blur-xl border-b border-slate-200 dark:border-white/10 transition-colors h-20">
+        <div class="max-w-7xl mx-auto px-6 h-full flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg text-white font-black text-xl italic shadow-indigo-500/20">N</div>
+                <span class="text-2xl font-black tracking-tighter uppercase italic">NATATRADE</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2.5 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-indigo-300 border border-slate-200 dark:border-white/10 hover:scale-110 transition-all">
+                    <i data-lucide="moon" id="theme-icon"></i>
+                </button>
+                <button class="bg-slate-900 dark:bg-indigo-600 text-white px-6 py-2.5 rounded-2xl text-sm font-extrabold shadow-lg shadow-indigo-500/10">Mulai Sekarang</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-24 px-6 text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 dark:bg-white/5 border border-indigo-100 dark:border-white/10 text-indigo-600 dark:text-indigo-300 text-[10px] font-black uppercase tracking-[0.2em] mb-10">
+            <i data-lucide="zap" class="w-4 h-4 fill-current"></i> Precision Portfolio Management
+        </div>
+        <h1 class="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-[0.95]">
+            Atur Transaksi. <br> 
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-400 dark:from-indigo-400 dark:to-emerald-400">Kuasai Masa Depan.</span>
+        </h1>
+        <p class="max-w-2xl mx-auto text-xl text-slate-500 dark:text-slate-400 mb-12 font-medium">
+            Platform hibrida profesional untuk mengelola strategi, aset, risiko, dan psikologi trading Anda secara terpadu.
+        </p>
+    </header>
+    
+    <section id="about" class="py-24 px-6 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass rounded-[3rem] p-12 md:p-20 shadow-2xl overflow-hidden relative border border-slate-200 dark:border-white/10">
+                <div class="absolute top-0 right-0 -z-10 w-64 h-64 bg-indigo-500/10 blur-3xl rounded-full"></div>
+                
+                <div class="flex flex-col lg:flex-row items-center gap-16">
+                    <div class="flex-1 space-y-8 text-left">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-100 dark:bg-white/5 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-widest">
+                            Solusi Trading Terpadu
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-black leading-tight">
+                            Mengapa Memilih <span class="text-indigo-600">NataTrade?</span>
+                        </h2>
+                        <p class="text-lg text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                            NataTrade bukan sekadar jurnal trading. Kami adalah platform hibrida yang dirancang khusus untuk menjembatani strategi teknis dengan manajemen risiko yang ketat dan audit psikologi berbasis AI.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="flex items-start gap-4">
+                                <div class="p-3 bg-emerald-500/10 rounded-2xl text-emerald-500">
+                                    <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 dark:text-slate-200">Presisi Data</h4>
+                                    <p class="text-sm text-slate-500">Kalkulasi Net P&L otomatis hingga detail terkecil.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="p-3 bg-purple-500/10 rounded-2xl text-purple-500">
+                                    <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 dark:text-slate-200">Kesehatan Mental</h4>
+                                    <p class="text-sm text-slate-500">Audit emosi trading Anda dengan bantuan teknologi AI.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-6">
+                            <a href="/register" class="inline-flex items-center gap-3 bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl text-lg font-black transition-all shadow-xl shadow-indigo-500/20 group">
+                                Mulai Perjalanan Anda 
+                                <i data-lucide="arrow-right" class="group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                            <p class="mt-4 text-xs text-slate-400 italic">Daftar sekarang secara gratis untuk manajemen portofolio yang lebih disiplin.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 w-full lg:max-w-md">
+                        <div class="bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 border border-white/20 shadow-inner">
+                            <div class="space-y-4">
+                                <div class="h-3 bg-indigo-500/20 rounded-full w-full"></div>
+                                <div class="h-3 bg-slate-200 dark:bg-white/5 rounded-full w-4/5"></div>
+                                <div class="h-3 bg-slate-200 dark:bg-white/5 rounded-full w-3/4"></div>
+                                <div class="flex gap-4 pt-4">
+                                    <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                                        <i data-lucide="trending-up" class="text-emerald-500 w-6 h-6"></i>
+                                    </div>
+                                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                                        <i data-lucide="wallet" class="text-blue-500 w-6 h-6"></i>
+                                    </div>
+                                    <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
+                                        <i data-lucide="shield-check" class="text-amber-500 w-6 h-6"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 px-6 glass border-y border-slate-200 dark:border-white/5 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-20">
+            <div class="flex-1 space-y-6 text-left">
+                <span class="text-[10px] font-black tracking-[0.4em] text-indigo-600 dark:text-indigo-400 uppercase">Nata Strategi</span>
+                <h2 class="text-4xl md:text-5xl font-black leading-tight tracking-tight">Evaluasi Trading Tanpa Celah</h2>
+                <p class="text-lg text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                    NataTrade menghitung Laba Bersih (Net P&L) secara matematis dengan rumus presisi untuk hasil trading riil.
+                </p>
+                <div class="space-y-4 pt-4 font-bold text-slate-700 dark:text-slate-200">
+                    <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-500"></i> Kalkulasi Otomatis Net P&L</div>
+                    <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-emerald-500"></i> Jurnal Trading Hibrida</div>
+                </div>
+            </div>
+            <div class="flex-1 w-full glass rounded-[3rem] p-12 shadow-2xl flex flex-col justify-center items-center aspect-video group">
+                <i data-lucide="bar-chart-3" class="w-16 h-16 text-emerald-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                <div class="h-2 bg-slate-900/5 dark:bg-white/10 w-2/3 rounded-full mb-4"></div>
+                <div class="h-2 bg-slate-900/5 dark:bg-white/5 w-1/2 rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 px-6 border-b border-slate-200 dark:border-white/5 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row-reverse items-center gap-20">
+            <div class="flex-1 space-y-6 text-left">
+                <span class="text-[10px] font-black tracking-[0.4em] text-indigo-600 dark:text-indigo-400 uppercase">Nata Aset</span>
+                <h2 class="text-4xl md:text-5xl font-black leading-tight tracking-tight">Pantau Pertumbuhan Kekayaan</h2>
+                <p class="text-lg text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                    Kelola strategi DCA dan pantau perkembangan Net Asset Value (NAV) portofolio Anda secara intuitif.
+                </p>
+                <div class="space-y-4 pt-4 font-bold text-slate-700 dark:text-slate-200">
+                    <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-blue-500"></i> Pantauan NAV Real-time</div>
+                    <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-blue-500"></i> Otomasi Strategi DCA</div>
+                </div>
+            </div>
+            <div class="flex-1 w-full glass rounded-[3rem] p-12 shadow-2xl flex flex-col justify-center items-center aspect-video group">
+                <i data-lucide="pie-chart" class="w-16 h-16 text-blue-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                <div class="h-2 bg-slate-900/5 dark:bg-white/10 w-2/3 rounded-full mb-4"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 px-6 glass border-b border-slate-200 dark:border-white/5 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-20">
+            <div class="flex-1 space-y-6 text-left">
+                <span class="text-[10px] font-black tracking-[0.4em] text-indigo-600 dark:text-indigo-400 uppercase">Nata Risiko</span>
+                <h2 class="text-4xl md:text-5xl font-black leading-tight tracking-tight">Keamanan Modal Prioritas Utama</h2>
+                <p class="text-lg text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                    Pastikan setiap transaksi berada dalam batas toleransi risiko yang aman dengan kalkulator ukuran posisi otomatis.
+                </p>
+                <div class="space-y-4 pt-4 font-bold text-slate-700 dark:text-slate-200">
+                    <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-amber-500"></i> Kalkulator Ukuran Posisi</div>
+                    <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-amber-500"></i> Kontrol Risiko Dinamis</div>
+                </div>
+            </div>
+            <div class="flex-1 w-full glass rounded-[3rem] p-12 shadow-2xl flex flex-col justify-center items-center aspect-video group">
+                <i data-lucide="activity" class="w-16 h-16 text-amber-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                <div class="h-2 bg-slate-900/5 dark:bg-white/10 w-2/3 rounded-full mb-4"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 px-6 border-b border-slate-200 dark:border-white/5 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row-reverse items-center gap-20">
+            <div class="flex-1 space-y-6 text-left">
+                <span class="text-[10px] font-black tracking-[0.4em] text-indigo-600 dark:text-indigo-400 uppercase">Nata Mental</span>
+                <h2 class="text-4xl md:text-5xl font-black leading-tight tracking-tight">Audit Psikologi Berbasis AI</h2>
+                <p class="text-lg text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                    Gunakan teknologi AI Vision untuk menganalisis emosi dan tingkat disiplin trading Anda secara objektif.
+                </p>
+                <div class="space-y-4 pt-4 font-bold text-slate-700 dark:text-slate-200">
+                    <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-purple-500"></i> Deteksi Emosi AI Vision</div>
+                    <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-purple-500"></i> Skor Disiplin Berbasis AI</div>
+                </div>
+            </div>
+            <div class="flex-1 w-full glass rounded-[3rem] p-12 shadow-2xl flex flex-col justify-center items-center aspect-video group">
+                <i data-lucide="brain-circuit" class="w-16 h-16 text-purple-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                <div class="h-2 bg-slate-900/5 dark:bg-white/10 w-2/3 rounded-full mb-4"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 px-6">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-3xl font-black mb-12 italic">FAQ</h2>
+            <div class="space-y-4 text-left">
+                <details class="glass p-6 rounded-2xl cursor-pointer group">
+                    <summary class="font-bold text-slate-800 dark:text-slate-100 list-none flex justify-between items-center">
+                        Apakah data transaksi saya aman?
+                        <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="mt-4 text-sm text-slate-500 leading-relaxed">Tentu. Kami menggunakan enkripsi standar industri untuk melindungi setiap detail strategi dan aset Anda.</p>
+                </details>
+                <details class="glass p-6 rounded-2xl cursor-pointer group">
+                    <summary class="font-bold text-slate-800 dark:text-slate-100 list-none flex justify-between items-center">
+                        Bagaimana cara kerja AI Mental Audit?
+                        <i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="mt-4 text-sm text-slate-500 leading-relaxed">AI kami menganalisis input emosi dan visual (via AI Vision) untuk memberikan skor disiplin yang objektif bagi trading Anda.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+    
+    <section class="py-20 px-6">
+        <div class="max-w-5xl mx-auto bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-[3rem] p-16 text-center shadow-2xl shadow-indigo-500/30">
+            <h2 class="text-4xl md:text-5xl font-black text-white mb-8 leading-tight">Mulai Menata Masa Depan <br> Trading Anda Hari Ini.</h2>
+            <a href="/register" class="inline-flex items-center gap-3 bg-white text-indigo-600 px-10 py-4 rounded-2xl text-lg font-black hover:scale-105 transition-all shadow-xl">
+                Register Gratis Sekarang
+                <i data-lucide="rocket"></i>
+            </a>
+        </div>
+    </section>
+
+    <footer class="py-20 text-center border-t border-slate-200 dark:border-white/5 opacity-50">
+        <p class="text-xs font-black tracking-widest uppercase italic">NataTrade © 2025 • Menata Transaksi, Menata Masa Depan</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        const html = document.getElementById('html-root');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        themeToggle.onclick = () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            themeIcon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
