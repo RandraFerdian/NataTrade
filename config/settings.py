@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'apps.mental',
     'apps.risk',
     'apps.strategy',
+    'apps.users',
 ]
 
 MIDDLEWARE = [
