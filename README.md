@@ -1,4 +1,4 @@
-# 💹 NataTrade - Atur Transaksi, Kuasai Masa Depan
+# 💹 NataTrade - Nata Transaksi, Nata Masa Depan
 
 **NataTrade** adalah platform hibrida profesional yang dirancang untuk membantu trader mengelola strategi, aset, risiko, dan psikologi secara terpadu. Dengan pendekatan desain **Zen-UI**, platform ini memberikan pengalaman manajemen portofolio yang bersih, presisi, dan modern.
 
