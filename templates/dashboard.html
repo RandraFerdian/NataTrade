@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | NataTrade Professional{% endblock %}
+
+{% block mental_insight %}
+    {% if mental_score >= 80 %}
+        "Disiplinmu luar biasa hari ini, pertahankan ritme ini."
+    {% elif mental_score > 0 %}
+        "Waspada emosi berlebih, istirahatlah sejenak."
+    {% else %}
+        "Belum ada audit mental hari ini."
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <header class="flex justify-between items-center">
+        <div>
+            <h3 class="text-3xl lg:text-4xl font-black italic tracking-tight text-slate-900">Halo, {{ user.username }}!</h3>
+            <p class="text-sm lg:text-base text-slate-400 font-medium">Sudahkah kamu disiplin hari ini?</p>
+        </div>
+        <button class="w-12 h-12 glass-card rounded-2xl flex items-center justify-center hover:border-indigo-600 hover:text-indigo-600 transition-all shadow-sm">
+            <i data-lucide="settings" class="w-6 h-6"></i>
+        </button>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="glass-card p-8 rounded-[2.5rem]">
+            <span class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Net P&L (hybrid)</span>
+            <p class="text-3xl font-black mt-3 text-emerald-500">${{ total_pnl|floatformat:2 }}</p>
+        </div>
+        <div class="glass-card p-8 rounded-[2.5rem]">
+            <span class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Total Asset Investasi</span>
+            <p class="text-3xl font-black mt-3 text-blue-500">${{ invest_pnl|floatformat:2 }}</p>
+        </div>
+        <div class="glass-card p-8 rounded-[2.5rem]">
+            <span class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Risk Status</span>
+            <p class="text-3xl font-black mt-3 text-amber-500 italic">Moderate</p>
+        </div>
+        <div class="glass-card p-8 rounded-[2.5rem]">
+            <span class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Mental Score</span>
+            <p class="text-3xl font-black mt-3 text-purple-500">{{ mental_score }}/100</p>
+        </div>
+    </div>
+
+    <div class="glass-card p-8 lg:p-10 rounded-[3rem]">
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h2 class="text-2xl font-black italic tracking-tight">Equity Growth</h2>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Nata Strategi Monitoring</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="px-4 py-2 bg-indigo-600 text-white text-[10px] font-black rounded-xl">7D</button>
+                <button class="px-4 py-2 glass-card text-[10px] font-black rounded-xl">30D</button>
+            </div>
+        </div>
+        <div class="w-full h-[350px] relative">
+            <svg viewBox="0 0 1000 300" class="w-full h-full">
+                <defs>
+                    <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.15" />
+                        <stop offset="100%" stop-color="#4f46e5" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
+                <path d="M0,150 Q100,100 200,180 T400,120 T600,200 T800,100 L1000,130 L1000,300 L0,300 Z" fill="url(#chartGradient)" />
+                <path d="M0,150 Q100,100 200,180 T400,120 T600,200 T800,100 L1000,130" fill="none" stroke="#4f46e5" stroke-width="4" stroke-linecap="round" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="glass-card p-10 rounded-[2.5rem]">
+            <h3 class="text-xl font-black italic mb-8">Recent Activity</h3>
+            <div class="space-y-6">
+                {% for trade in recent_trades %}
+                <div class="flex items-center justify-between p-2 rounded-2xl hover:bg-slate-50">
+                    <div class="flex items-center gap-5">
+                        <div class="p-3 bg-emerald-50 rounded-2xl text-emerald-600"><i data-lucide="coins" class="w-5 h-5"></i></div>
+                        <div>
+                            <p class="font-bold text-sm text-slate-700">{{ trade.asset_pair }}</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">{{ trade.strategy_type }}</p>
+                        </div>
+                    </div>
+                    <span class="text-sm font-black text-emerald-500">${{ trade.net_pnl|floatformat:2 }}</span>
+                </div>
+                {% empty %}
+                <p class="text-center text-slate-400 italic text-xs">Belum ada transaksi.</p>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+{% endblock %}
