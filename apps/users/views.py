@@ -15,7 +15,7 @@ def register_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, "Registrasi berhasil!")
-            return redirect('dahsboard')
+            return redirect('dashboard')
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
@@ -50,7 +50,7 @@ def dashboard_view(request):
     # 4. Ambil Skor Mental Terakhir (Nata Mental)
     last_audit = MentalAudit.objects.filter(user=request.user).last()
     final_mental_score = last_audit.combined_score if last_audit else 0
-    return render(request, 'dashboard.html')
+    
     context = {
         'total_pnl': total_combined_profit,
         'trading_pnl': trading_profit,
@@ -58,6 +58,8 @@ def dashboard_view(request):
         'mental_score': final_mental_score,
         'recent_trades': trades.order_by('-created_at')[:5],
     }
+    return render(request, 'dashboard.html')
+
 
 def logout_view(request):
     return redirect('landing')

@@ -6,11 +6,22 @@ class TradeLogForm(forms.ModelForm):
         model = TradeLog
         # 1. Pilih field sing bakal diisi manual dening user
         fields = [
-            'asset_pair', 'side', 'status', 'entry_time', 'exit_time',
-            'entry_price', 'exit_price', 'position_size_usdt', 'quantity',
-            'leverage', 'gross_pnl', 'entry_fee', 'exit_fee', 
-            'funding_fee', 'gas_fee', 'risk_amount', 'planned_rr', 
-            'tags', 'notes'
+            'asset_pair', 
+            'side', 
+            'entry_time', 
+            'exit_time',
+            'entry_price', 
+            'exit_price', 
+            'position_size_usdt',
+            'leverage', 
+            'entry_fee', 
+            'exit_fee', 
+            'funding_fee', 
+            'gas_fee', 
+            'risk_amount', 
+            'planned_rr', 
+            'tags', 
+            'notes'
         ]
         
         # 2. Widgets: Ngerubah tampilan standar dadi luwih canggih

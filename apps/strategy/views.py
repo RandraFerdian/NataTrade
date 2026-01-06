@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import TradeLog, TradingAccount 
 from .form import TradeLogForm
@@ -80,3 +80,13 @@ def nata_strategi_view(request):
     }
     
     return render(request, 'strategy/nata_strategi.html', context)
+
+@login_required
+def edit_trade_view(request, pk):
+    trade = get_object_or_404(TradeLog, pk=pk, user=request.user)
+    if request.method == 'POST':
+        form = TradeLogForm(request.POST, instance=trade)
+        if form.is_valid():
+            form.save() # Otomatis hitung ulang P&L di model
+            return redirect('nata_strategi')
+    return redirect('nata_strategi')
