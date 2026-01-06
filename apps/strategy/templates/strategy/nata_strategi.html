@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
 {% block title %}Nata Strategi | NataTrade Professional{% endblock %}
 
@@ -10,7 +11,7 @@
             <p class="text-slate-400 text-[10px] uppercase tracking-[0.3em] font-bold">Audit & Performance Center</p>
         </div>
         
-        <button onclick="toggleModal()" class="flex items-center gap-3 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black italic text-xs tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 group">
+        <button onclick="openAddModal()" class="flex items-center gap-3 px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black italic text-xs tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 group">
             <i data-lucide="plus-circle" class="w-4 h-4 group-hover:rotate-90 transition-all"></i>
             TAMBAH POSISI
         </button>
@@ -47,59 +48,87 @@
         </div>
     </div>
 
-    <div class="space-y-8">
-        <div class="glass-card p-8 rounded-[2.5rem] border-white/60">
-            <div class="flex justify-between items-center mb-6">
+    <div class="glass-card p-8 rounded-[2.5rem] border-white/60">
+        <div class="flex justify-between items-center mb-6">
+            <div>
                 <h3 class="font-black italic text-lg text-slate-800 tracking-tight">Trading Calendar</h3>
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Januari 2026</span>
+                {# Menampilkan Nama Bulan & Tahun secara Dinamis #}
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ month_name }} {{ curr_year }}</span>
             </div>
-            <div class="grid grid-cols-7 gap-3">
-                {% for i in "1234567890123456789012345678901" %}
-                <div class="aspect-square flex items-center justify-center rounded-2xl bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer group hover:bg-white hover:shadow-sm relative">
-                    <span class="text-xs font-bold text-slate-400 group-hover:text-indigo-600 z-10">{{ forloop.counter }}</span>
-                    <div class="absolute bottom-2 w-1 h-1 rounded-full bg-slate-200"></div>
-                </div>
-                {% endfor %}
+            
+            <div class="flex gap-2">
+                <a href="?month={{ prev_m }}&year={{ prev_y }}" class="p-2 hover:bg-slate-100 rounded-xl transition-all">
+                    <i data-lucide="chevron-left" class="w-5 h-5 text-slate-400"></i>
+                </a>
+                <a href="?month={{ next_m }}&year={{ next_y }}" class="p-2 hover:bg-slate-100 rounded-xl transition-all">
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400"></i>
+                </a>
             </div>
         </div>
 
-        <div class="glass-card rounded-[2.5rem] overflow-hidden border-white/60">
-            <div class="p-6 border-b border-slate-50 bg-white/30">
-                <h3 class="font-black italic text-slate-700 uppercase text-xs tracking-widest">Recent Audit Logs</h3>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400">
-                        <tr>
-                            <th class="px-8 py-4">Asset Pair</th>
-                            <th class="px-8 py-4">Strategy</th>
-                            <th class="px-8 py-4 text-right">Net P&L</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
-                        {% for trade in trades %}
-                        <tr class="hover:bg-white/40 transition-all">
-                            <td class="px-8 py-5">
-                                <p class="font-bold text-slate-700">{{ trade.asset_pair }}</p>
-                                <span class="text-[9px] font-black px-2 py-0.5 rounded bg-slate-100 text-slate-500 uppercase">{{ trade.side }}</span>
-                            </td>
-                            <td class="px-8 py-5">
-                                <span class="text-[10px] font-black text-indigo-600 uppercase tracking-tighter">{{ trade.strategy_type }}</span>
-                            </td>
-                            <td class="px-8 py-5 text-right">
-                                <p class="font-black text-sm {% if trade.net_pnl >= 0 %}text-emerald-500{% else %}text-red-500{% endif %}">
-                                    ${{ trade.net_pnl|floatformat:2 }}
-                                </p>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="3" class="px-8 py-10 text-center text-slate-400 italic text-xs">Belum ada riwayat transaksi.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <div class="grid grid-cols-7 gap-3">
+            {# Loop nggunakake days_range seko views.py (1-28/30/31) #}
+            {% for day in days_range %}
+                {% if day in heatmap_data %}
+                    {% with pnl=heatmap_data|get_item:day %}
+                        <div class="aspect-square flex flex-col items-center justify-center rounded-2xl border transition-all cursor-pointer 
+                            {% if pnl > 0 %} bg-emerald-500 border-emerald-400 shadow-lg shadow-emerald-200/50 
+                            {% elif pnl < 0 %} bg-red-500 border-red-400 shadow-lg shadow-red-200/50 
+                            {% else %} bg-slate-200 border-slate-300 {% endif %} group">
+                            
+                            <span class="text-xs font-black text-white">{{ day }}</span>
+                            <span class="text-[8px] font-bold text-white/80">{% if pnl > 0 %}+{% endif %}${{ pnl|floatformat:0 }}</span>
+                        </div>
+                    {% endwith %}
+                {% else %}
+                    <div class="aspect-square flex items-center justify-center rounded-2xl bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer group hover:bg-white hover:shadow-sm">
+                        <span class="text-xs font-bold text-slate-400 group-hover:text-indigo-600">{{ day }}</span>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="glass-card rounded-[2.5rem] overflow-hidden border-white/60">
+        <div class="p-6 border-b border-slate-50 bg-white/30">
+            <h3 class="font-black italic text-slate-700 uppercase text-xs tracking-widest">Recent Audit Logs</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50/50 text-[10px] font-black uppercase text-slate-400">
+                    <tr>
+                        <th class="px-8 py-4">Asset Pair</th>
+                        <th class="px-8 py-4">Strategy</th>
+                        <th class="px-8 py-4 text-right">Net P&L</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    {% for trade in trades %}
+                    <tr class="hover:bg-white/40 transition-all group">
+                        <td class="px-8 py-5">
+                            <p class="font-bold text-slate-700">{{ trade.asset_pair }}</p>
+                            <span class="text-[9px] font-black px-2 py-0.5 rounded bg-slate-100 text-slate-500 uppercase">{{ trade.side }}</span>
+                        </td>
+                        <td class="px-8 py-5">
+                            <span class="text-[10px] font-black text-indigo-600 uppercase tracking-tighter">{{ trade.strategy_type }}</span>
+                        </td>
+                        <td class="px-8 py-5 text-right flex items-center justify-end gap-4">
+                            <p class="font-black text-sm {% if trade.net_pnl >= 0 %}text-emerald-500{% else %}text-red-500{% endif %}">
+                                ${{ trade.net_pnl|floatformat:2 }}
+                            </p>
+                            <button onclick="openEditModal('{{ trade.pk }}', '{{ trade.asset_pair }}', '{{ trade.entry_price }}', '{{ trade.exit_price }}', '{{ trade.position_size_usdt }}', '{{ trade.leverage }}', '{{ trade.side }}')" 
+                                    class="opacity-0 group-hover:opacity-100 p-2 hover:bg-indigo-50 rounded-xl transition-all">
+                                <i data-lucide="edit-2" class="w-4 h-4 text-indigo-400"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="px-8 py-10 text-center text-slate-400 italic text-xs">Belum ada riwayat transaksi.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -115,13 +144,17 @@
                     <i data-lucide="x" class="w-6 h-6 text-slate-400"></i>
                 </button>
             </div>
-
-            <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6" id="tradeForm">
                 {% csrf_token %}
                 {% for field in form %}
                 <div class="space-y-1 {% if field.name == 'notes' or field.name == 'tags' %}md:col-span-2{% endif %}">
                     <label class="text-[10px] font-black uppercase text-slate-400 ml-2">{{ field.label }}</label>
                     {{ field }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <p class="text-red-500 text-[9px] font-bold px-2 mt-1 animate-pulse">⚠️ {{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
                 </div>
                 {% endfor %}
                 <div class="md:col-span-2 pt-4">
@@ -146,7 +179,7 @@
                 <div class="space-y-4">
                     <div class="space-y-1">
                         <label class="text-[10px] font-black uppercase text-slate-400 ml-2">Input USDT</label>
-                        <input type="number" step="0.01" name="initial_balance" value="{{ modal_awal }}" 
+                        <input type="number" step="any" name="initial_balance" value="{{ modal_awal }}" 
                                class="w-full bg-white/50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none font-mono">
                     </div>
                     <button type="submit" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black italic uppercase text-xs tracking-widest hover:bg-indigo-700 shadow-lg">
@@ -169,6 +202,37 @@
         const bModal = document.getElementById('balanceModal');
         bModal.classList.toggle('hidden');
         document.body.classList.toggle('overflow-hidden');
+    }
+
+    function openAddModal() {
+        const form = document.querySelector('#formModal form');
+        form.action = "{% url 'nata_strategi' %}";
+        form.reset();
+        document.querySelector('#formModal h3').innerText = "Jurnal Posisi Anyar";
+        toggleModal();
+    }
+
+    // Handle form error auto-open
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if form.errors %}
+            toggleModal();
+        {% endif %}
+    });
+
+    function openEditModal(id, pair, entry, exit, size, leverage, side) {
+        const form = document.querySelector('#formModal form');
+        form.action = `/strategy/edit/${id}/`;
+        
+        // Ngisi field otomatis
+        document.getElementsByName('asset_pair')[0].value = pair;
+        document.getElementsByName('entry_price')[0].value = entry;
+        document.getElementsByName('exit_price')[0].value = exit;
+        document.getElementsByName('position_size_usdt')[0].value = size;
+        document.getElementsByName('leverage')[0].value = leverage;
+        document.getElementsByName('side')[0].value = side;
+        
+        document.querySelector('#formModal h3').innerText = "Edit Posisi Trading";
+        toggleModal();
     }
 </script>
 {% endblock %}

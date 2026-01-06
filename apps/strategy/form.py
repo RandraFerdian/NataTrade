@@ -37,6 +37,7 @@ class TradeLogForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({
+                'step': 'any',
                 'class': (
                     'w-full bg-white/50 border border-slate-200 rounded-xl px-4 py-3 '
                     'text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all'

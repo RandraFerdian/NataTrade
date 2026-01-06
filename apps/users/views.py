@@ -7,6 +7,7 @@ from django.db.models import Sum
 from apps.asset.models import InvestementLog
 from apps.mental.models import MentalAudit
 from apps.strategy.models import TradeLog
+from decimal import Decimal
 
 def register_view(request):
     if request.method == "POST":
@@ -36,21 +37,22 @@ def login_view(request):
 
 @login_required
 def dashboard_view(request):
-    # 1. Hitung Profit Trading (Nata Strategi)
+    # 1. Hitung Profit Trading
     trades = TradeLog.objects.filter(user=request.user)
-    trading_profit = sum(t.net_pnl for t in trades) # Menggunakan @property net_pnl
+    trading_profit = sum(t.net_pnl for t in trades)
 
-    # 2. Hitung Profit Investasi (Nata Aset)
+    # 2. Hitung Profit Investasi
     investments = InvestementLog.objects.filter(user=request.user)
-    investment_profit = investments.aggregate(Sum('total_profit'))['total_profit__sum'] or 0
+    investment_profit = investments.aggregate(Sum('total_profit'))['total_profit__sum'] or Decimal('0.00')
 
     # 3. Gabungkan Total Profit
     total_combined_profit = trading_profit + investment_profit
 
-    # 4. Ambil Skor Mental Terakhir (Nata Mental)
+    # 4. Ambil Skor Mental Terakhir
     last_audit = MentalAudit.objects.filter(user=request.user).last()
     final_mental_score = last_audit.combined_score if last_audit else 0
     
+    # Context didefinisikan SEBELUM return
     context = {
         'total_pnl': total_combined_profit,
         'trading_pnl': trading_profit,
@@ -58,7 +60,8 @@ def dashboard_view(request):
         'mental_score': final_mental_score,
         'recent_trades': trades.order_by('-created_at')[:5],
     }
-    return render(request, 'dashboard.html')
+    # Pastikan 'context' dimasukkan ke dalam render
+    return render(request, 'dashboard.html', context)
 
 
 def logout_view(request):

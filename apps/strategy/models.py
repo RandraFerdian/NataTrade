@@ -46,15 +46,15 @@ class TradeLog(models.Model):
     quantity = models.DecimalField(max_digits=20, decimal_places=8, default=Decimal('0.0000'), blank=True)
     
     # Variabel PNL & Fee (Dihitung Otomatis)
-    gross_pnl = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal('0.0000'), blank=True) 
-    entry_fee = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal('0.0000'))
-    exit_fee = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal('0.0000'))
-    funding_fee = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal('0.0000'))
-    gas_fee = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal('0.0000'))
+    gross_pnl = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal('0.0000'), blank=True) 
+    entry_fee = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal('0.0000'))
+    exit_fee = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal('0.0000'))
+    funding_fee = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal('0.0000'))
+    gas_fee = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal('0.0000'))
     
     # Risk Management & Analisa
-    risk_amount = models.DecimalField(max_digits=15, decimal_places=2, default=Decimal('0.0000'))
-    planned_rr = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal('1.0000'))
+    risk_amount = models.DecimalField(max_digits=15, decimal_places=4, default=Decimal('0.0000'))
+    planned_rr = models.DecimalField(max_digits=5, decimal_places=4, default=Decimal('1.0000'))
     tags = models.CharField(max_length=100, blank=True, help_text="Contoh: #FOMO #Plan")
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -67,7 +67,7 @@ class TradeLog(models.Model):
             self.quantity = total_position_size / self.entry_price
 
         # 2. HITUNG ESTIMASI FEE OTOMATIS (Jika diisi 0, asumsi 0.05% per side)
-        fee_rate = Decimal('0.0005') 
+        fee_rate = Decimal('0.0000') 
         if self.entry_fee == 0:
             self.entry_fee = total_position_size * fee_rate
         if self.exit_fee == 0:
